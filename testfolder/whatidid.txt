@@ -1,0 +1,30 @@
+ 735  git clone git@github.com:TrevorBaker25/Notes.git ( clone into the repo )
+  738  cd Notes/ ( switch directories to new repo)
+  742  mkdir testfolder (how to make a folder inside the new repo )
+  743  cd testfolder ( change into that new directory )
+  744  cd .. ( how to go back one directory. cd ../.. is how to go bakc 2 directories )
+  745  cd Notes
+  746  cd testfolder
+  747  git checkout -b "trevor" ( how to make a new branch )
+  748  git branch -r ( lists remote branches )
+  749  git switch main ( how to switch in between )
+  751  git branch ( list all branches )
+  752  git checkout -b "trevor2"
+  753  touch notes.txt ( how to make a file )
+  755  cat notes.txt ( how to read contents of a file )
+  756  vi notes.txt ( how to edit files. first click "i" this allows you to type then click :x + enter. )
+  764  git push --set-upstream origin trevor2 ( when you push on a branch for the first time this command will appear in the terminal just copy and paste it. )
+  765  touch notes2.txt
+  766  vim notes2.txt
+  767  cat notes2.txt 
+  768  git add notes2.txt ( git add can be used in a couple ways. git add . <----- this means EVERYTHING.  or the right way is to type out the file name of what you just worked on. you can list multiple files.
+  769  git commit -m "this is my notes" ( this is the commit message that indicates to the boss what you did in the file. so he knows what yu changed. )
+  770  git push ( finally you push the changes. this will create a prompt on github/your-repo.com for you to create a pull request. create it and then at the bottom merge the chagne. anddelete you branch. )
+  771  git switch main ( swithc back to the main branch)
+  772  git pull ( pull in the latest changes from github. this will contain the changes you just commited :) )
+  773  cd ..
+  774  ls
+  775  cd testfolder/
+  776  ls
+  777  history
+
