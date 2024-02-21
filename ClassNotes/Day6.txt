@@ -1,0 +1,85 @@
+CI/CD
+=====
+Continuous Integration (CI)
+Continuous Delivery (CD) - manual
+Continuous Deployment (CD) - automatic deployment
+
+Java & Jenkins:
+
+$ java -version
+$ sudo systemctl status jenkins
+$ sudo systemctl start jenkins
+$ sudo systemctl status jenkins
+
+Installation of Java:
+$ sudo apt-get install openjdk-11-jdk
+
+Install Jenkins:
+$ wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add
+$ sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/'' > /etc/apt/sources.list.d/jenkins.list
+$ sudo apt-get update
+$ sudo apt-get install jenkins 
+$ sudo systemctl start jenkins
+
+Access our Jenkins Server (On the lab machine):
+Browser: localhost:8080
+admin/admin
+
+Unlock Jenkins:
+$ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+> Install suggested plugins
+> Create admin user
+> Start using Jenkins
+
+
+Create a new Jenkins Job:
+> Dashboard > New Item
+    Name: demojob
+    Template: Freestyle project
+> Ok
+
+> Build > Add build step > Execute shell
+    Command: echo "Hello from Demo job"
+
+> Save
+
+> Build Now
+
+Java CI Integration:
+
+Github repo name: freestyle-java-feb24
+
+Clone the repo:
+$ git clone YOUR_REPO_SSH_URL
+$ git clone git@github.com:abhijithvg/freestyle-java-feb24.git
+$ cd freestyle-java-feb24
+
+$ nano HelloWorld.java
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, world!");
+    }
+}
+
+$ git add .
+$ git commit -m "Added my new java file"
+$ git push origin main
+
+Compile & Run a Java code:
+$ javac HelloWorld.java
+(Compilation operation - HelloWorld.class)
+$ java HelloWorld
+(Execute/Run)
+
+- Jenkins Job:
+Name: myjavajob1
+Template: Freestyle project
+SCM > Select Git
+    Repository URL: https://github.com/abhijithvg/freestyle-java-feb24.git
+    Branch Specifier: */main
+Build > Add build step > Execute Shell
+Command:
+javac HelloWorld.java
+java HelloWorld
+

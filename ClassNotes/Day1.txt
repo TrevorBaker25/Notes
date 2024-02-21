@@ -1,0 +1,107 @@
+IOS (Basic Input/Output System) - Bootloader - Kernel - Init System - Daemon - Graphical Server/Desktop Environment - Applications
+
+
+Linux Commands:
+
+To see the linux version:
+$ lsb_release -a
+
+To clear the terminal screen:
+$ clear
+
+To get the present working directory:
+$ pwd
+
+List the contents of the directory:
+$ ls       -> show the contents of the pwd
+$ ls /path_to_the_dir  -> show the contents of a directory in a particular path
+$ ls /home
+$ ls Desktop       -> relative path
+$ ls /home/YOUR_USERNAME_DIR/Desktop       -> relative path
+
+$ ls -l     -> show the contents of the directory in a list format
+
+drwxr-xr-x 2 abhijithvggmail abhijithvggmail 4096 Jan 14 15:39 Desktop
+
+drwxr-xr-x -> permission
+2 -> count/number of items in the directory 
+abhijithvggmail -> owner
+abhijithvggmail -> user/user_group 
+4096 -> size 
+Jan 14 15:39 -> creation time
+Desktop -> directory name
+
+
+$ ls -la        -> for listing of files & folders including hidden ones
+$ ls -a        -> for showing files & folders including hidden ones
+
+Manual/help of a linux command:
+$ man ls      -> manual for ls command
+
+
+Create a new directory:
+$ mkdir Testdir
+$ cd Tls
+
+Enter inside any directory:
+$ cd Testdir
+
+Creating files: An empty file
+$ touch file_touch.txt
+
+Print the contents of a file:
+$ cat file_touch.txt
+
+Creating files: with some content
+$ echo "My message: Hi"
+$ echo "My message: Hi" > file_echo.txt
+$ cat file_echo.txt
+
+Replace the contents of a file:
+$ echo "My new content" > file_echo.txt
+$ cat file_echo.txt
+
+Append to the contents of a file:
+$ echo "My new line" >> file_echo.txt
+$ cat file_echo.txt
+
+File Permissions:
+-rw-rw-r--
+664
+
+- 		-> file(-)/directory(d)/simlink(l)
+rw-		-> user permissions -> 6
+rw-		-> group permission -> 6
+r--		-> other permission -> 4
+
+
+drwxrwxr-x
+775
+
+r -> read	 -> 4
+w -> write	 -> 2
+x -> execute -> 1 
+- -> 0
+
+664 -> 777
+
+Change the permission of a file:
+$ chmod 777 file_echo.txt
+[OR]
+$ chmod u=rwx,g=rwx,a=rwx file_echo.txt
+$ chmod u=rwx file_echo.txt
+
+
+Change the ownership:
+$ chown root file_touch.txt
+
+Escalate a single command execution with sudo privilege:
+$ sudo chown root file_touch.txt
+
+linh
+abhi
+root
+
+root $ sudo chown root file_touch.txt
+abhi $ sudo chown abhi file_touch.txt
+linh $ sudo chown linh file_touch.txt

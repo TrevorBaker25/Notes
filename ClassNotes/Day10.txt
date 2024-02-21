@@ -1,0 +1,127 @@
+Ansible Adhoc Commands - Ansible Modules
+
+$ ansible localhost -m setup
+[OR]
+$ ansible webservers -m setup
+$ ansible webservers -m shell -a 'hostname'
+
+https://docs.ansible.com/ansible/2.9/modules/list_of_all_modules.html
+
+$ ansible webservers -m apt -a 'name=git state=present'
+$ ansible webservers -m file -a 'dest=/root/sample.txt state=touch mode=600 owner=root group=root' --become
+$ sudo ls /root
+
+
+name: abhi
+vehicles:
+  - bike
+  - car
+  - train
+[OR]
+vehicles: [bike, car, train]
+
+
+myplaybook.yml
+---
+- hosts: localhost
+  tasks:
+
+- hosts: webservers
+  tasks:
+
+Execution 1:
+  Tasks:
+  *- Installing the application
+  *- Configuring the application
+  *- Start the application service
+
+  Handler:
+  *- Restart the application service
+
+
+Execution 2 (no conf changes):
+  Tasks:
+  - Installing the application
+  - Configuring the application
+  - Start the application service
+
+  Handler:
+  - Restart the application service
+
+
+Execution 3 (is conf changes):
+  Tasks:
+  - Installing the application
+  *- Configuring the application
+  - Start the application service
+
+  Handler:
+  *- Restart the application service
+
+
+
+httpd -> install app
+
+- name: install httpd
+  yum:
+    name: httpd
+    state: present
+
+Execution 1 -> will execute -> httpd installed
+Execution 2 -> will not execute -> no error
+
+
+Ansible
+- Ansible Playbook
+  - Plays
+    sections: hosts, vars, remote_user, tasks, handlers, roles
+      tasks/handlers: modules
+
+
+github_url
+branch_name
+
+
+
+
+www1.example.com      
+www2.example.com      
+www3.example.com      
+www4.example.com      
+www5.example.com   
+
+[OR]
+
+www[1-5].example.com
+
+.yml or .yaml
+
+$ nano apache2.yml
+---
+- hosts: webservers
+  become: true
+  tasks:
+    - name: install apache2
+      apt: name=apache2 state=latest
+
+    - name: enabled mod_rewrite
+      apache2_module: name=rewrite state=present
+      notify:
+        - restart apache2
+
+  handlers:
+    - name: restart apache2
+      service: name=apache2 state=restarted
+
+Syntax check:
+$ ansible-playbook apache2.yml --syntax-check
+
+Run a playbook:
+$ ansible-playbook apache2.yml
+
+
+Verify:
+$ ansible webservers -m shell -a "service apache2 status"
+[OR]
+$ ansible -m shell -a "service apache2 status" webservers
+

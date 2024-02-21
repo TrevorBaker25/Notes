@@ -1,0 +1,129 @@
+Forking:
+
+A - Github -> Organization - Project Repo
+B - Github -> fork the Project repo - copy of the repo in their github account
+    B's machine -> SSH -> B's github account
+    B -> clone the forked Project repo -> B's machine
+      -> work on that repo locally
+      -> push the changes to the forked repo -> forked Project repo - B's account
+    B -> Pull Request to the A's Project Repo
+A - will get a PR from B's account
+  - A will have the review the changes
+  - A merge the changes from B to the Original Organization - Project Repo
+
+Fork -> copy repo from one Github account to another
+Clone -> copy repo from one Github account to local machine
+
+Source Repo: https://github.com/creativeab88/source-project-jan24.git
+
+$ git clone FORKED_REPO_SSH_URL
+$ git clone git@github.com:abhijithvg/source-project-jan24.git
+$ cd source-project-jan24/
+$ echo "YOUR_NAME" > YOUR_NAME.txt
+
+$ git add .
+$ git commit -m "Added YOUR_NAME.txt to the repo"
+$ git commit -m "Added abhi.txt to the repo"
+
+$ git push origin main
+
+Create a Pull Request(PR)
+
+
+Branch:
+
+- Create new github repo: projectfile-jan24
+- Clone the repo using the ssh url:
+$ cd ..
+$ git clone YOUR_REPO_SSH_URL
+
+$ git clone git@github.com:abhijithvg/projectfile-jan24.git
+$ cd projectfile-jan24
+
+To see the branches:
+$ git branch
+
+$ echo "My first file on main branch" > main.txt
+$ git add .
+$ git commit -m "Added main.txt on main branch"
+
+$ git log --oneline --decorate
+
+
+Create a new branch:
+$ git branch new_branch
+$ git branch
+$ git log --oneline --decorate 
+
+Switching between branches:
+$ git checkout new_branch
+$ git branch
+$ git log --oneline --decorate 
+
+Rename a branch:
+$ git branch -M demo
+$ git branch
+$ git log --oneline --decorate 
+
+$ echo "My first file on demo branch" > demo.txt
+$ git add .
+$ git commit -m "Added demo.txt on demo branch"
+$ git log --oneline --decorate 
+
+Push branch to the remote repo:
+$ git push origin main
+$ git push origin --all
+
+Delete a branch:
+$ git branch test_branch
+$ git branch
+$ git branch -d test_branch
+$ git branch
+
+$ git branch -d test_branch -> delete branches that are already merged
+$ git branch -D test_branch -> delete branches that are not merged already
+
+$ git push origin -d new_branch     [Delete a branch from the remote repo]
+
+
+$ git branch mybranch
+$ git checkout mybranch
+[OR]
+$ git checkout -b mybranch
+$ git checkout demo
+$ git branch -d mybranch
+
+Merging branch:
+
+$ git checkout main
+$ git branch
+$ ls
+$ git merge demo
+
+$ git push origin main
+
+$ git branch demo1
+$ git branch
+
+$ echo "Second line on main branch" >> demo.txt
+$ git add .
+$ git commit -m "Added second line to demo.txt on main branch"
+$ git log --oneline --decorate --all
+
+$ git checkout demo1
+$ echo "Second line on demo1 branch" >> demo.txt
+$ echo "Third line on demo1 branch" >> demo.txt
+$ git add .
+$ git commit -m "Added second & third line to demo.txt on demo1 branch"
+$ git log --oneline --decorate --all
+$ git log --oneline --decorate --all --graph
+
+
+$ git checkout main
+$ git merge demo1
+
+$ nano demo.txt
+[Make the merge conflict resolution changes]
+
+$ git add .
+$ git commit -m "After conflict resolution"

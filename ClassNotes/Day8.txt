@@ -1,0 +1,114 @@
+Ant Integration:
+> Jenkins Dashboard > Manage Jenkins > Tools
+> Ant Installations > Add Ant
+  - Name: myant
+  - Install automatically 
+> Apply > Save
+
+FileName: build.xml
+---------
+<?xml version="1.0"?>
+<project name="Hello World Project" default="info">
+<target name="info">
+<echo>Hello World - Welcome to Ant integration</echo>
+</target>
+</project>
+
+> Create a new Freestyle project in Jenkins
+> SCM > Git > HTTPS REPO URL - https://github.com/abhijithvg/freestyle-java-feb24.git
+  > Branch specifier > */main
+> Build > Add build step > Invoke Ant
+  Ant Version: myant
+
+
+Parameterized Build:
+
+Install plugin: Build with parameters
+
+Create Job:
+  Name: paramjob
+  Template: Freestyle project
+  - General > Select "This project is parameterized"
+    - Add parameter > Select "String Parameter"
+      Name: myparam
+      Default value: My param default
+      Description: My custom param
+
+  - Build > Add build step > Execute shell
+    Command:
+    echo $myparam
+
+
+
+Remotely trigger a Jenkins job:
+
+> antproject configuration > Build Triggers > Select "Trigger Builds Remotely"
+  > Authentication token > sam
+
+
+JENKINS_URL/job/antproject/build?token=TOKEN_NAME
+JENKINS_URL/job/antproject/buildWithParameters?token=TOKEN_NAME
+
+JENKINS_URL: http://localhost:8080
+TOKEN_NAME: sam
+
+Browse: http://localhost:8080/job/antproject/build?token=sam
+
+
+> paramjob configuration > Build Triggers > Select "Trigger Builds Remotely"
+  > Authentication token > sam
+
+
+JENKINS_URL/job/paramjob/buildWithParameters?token=TOKEN_NAME
+
+JENKINS_URL: http://localhost:8080
+TOKEN_NAME: sam
+
+Browse: http://localhost:8080/job/paramjob/buildWithParameters?token=sam
+Browse: http://localhost:8080/job/paramjob/buildWithParameters?token=sam&myparam=Testmessage
+
+
+
+
+
+Configuration Management with Ansible:
+
+- CM
+- Consistency in infrastructure/configuration
+
+- Desired State (Configuration that you want) -> Current State = Desired State
+
+
+Configuration Management Tools:
+- CM Server/Control Server
+- Nodes
+
+Types of CM Tools:
+2 types:
+- Pull-based CM tool
+  - Agent based
+  - Constant polling - from the Node to the CM server
+    - agent will be sending the   current state of the node to the server
+  - Server will stiore this information about the node
+  - agent
+    - responsible for initiating the communication
+    - downloading the CI from the server to the node
+    - implementation the CI on the nodes
+  - agent management - your responsibility
+  - Control Server - should be always running
+  - setup can be a bit complex
+  Eg:- Puppet & Chef
+
+
+- Push-based CM tool
+  - Agent-less
+  - From the CM server to the node
+    - gather the information about the node at the time of pushing the CI(Configuration Information)
+  - Server stores the information about the node
+  - server
+    - responsible for initiating the communication 
+    - sending the CI to the nodes
+    - implementation of CI on the nodes
+  - Control Server - need not be always running
+  - setup will be simpler
+  Eg:- Ansible & SaltStack

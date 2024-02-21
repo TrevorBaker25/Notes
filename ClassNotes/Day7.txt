@@ -1,0 +1,83 @@
+Cron-style Syntax:
+MINUTE(0-59) HOUR(0-23) DOM(1-31) MONTH(1-12) DOW(0-7)
+*            *          *         *           *
+S 0/7
+M 1
+T 2
+W 3
+T 4
+F 5
+S 6
+S 7
+* * * * *      -> every minute
+5 * * * *      
+* 2 * * * 
+*/5 * * * *      
+
+
+Poll SCM:
+Jenkins Dashboard > myjavajob1 > Build Triggers > Select "Poll SCM" > schedule: * * * * *
+
+
+Integrate Tools with Jenkins:
+
+Java Build Tools -> Maven, Ant
+- Build the java application
+- Dependency Management - java library management
+- Testcase execution, package your application
+
+Maven -> pom.xml -> mvn (cli)
+Ant -> build.xml
+
+Restart Jenkins:
+Browse: localhost:8080/restart/
+
+
+Update Jenkins:
+$ ls /usr/share/jenkins/
+[OR]
+$ ls /usr/share/java/
+
+$ cd /usr/share/jenkins/
+$ sudo service jenkins stop
+$ sudo mv jenkins.war jenkins.war.old
+$ sudo wget https://updates.jenkins-ci.org/latest/jenkins.war
+$ sudo service jenkins start
+
+
+Integrate Maven with Jenkins:
+> Install plugin: Maven Integration
+[Jenkins Dashboard > Manage Jenkins > Plugins]  
+> Updates section > Update all plugins
+
+Configure Tools in Jenkins:
+> Jenkins Dashboard > Manage Jenkins > Tools
+
+Configure JDK & Maven:
+
+Method 1: Tool already installed on your Jenkins server machine -> connect that pre-installed tool to your Jenkins server.
+Method 2: Use Jenkins to install the tool within the Jenkins sandbox env. You can maintain different versions of the same tool.
+
+$ mvn --version
+
+Configure Java(JDK):
+    Name: myjava
+    JAVA_HOME: /usr/lib/jvm/java-11-openjdk-amd64/
+
+Configure Maven:
+    Name: mymvn
+    MAVEN_HOME: /usr/share/maven
+
+
+Java Maven Application:
+https://github.com/abhijithvg/simple-java-maven-app
+
+Create a new Jenkins Job:
+    Job name: samplemvn
+    Template: Maven project
+    SCM > Git > 
+        Repository url: https://github.com/abhijithvg/simple-java-maven-app.git
+    Goal & Options: clean test package
+
+
+mvn clean test package

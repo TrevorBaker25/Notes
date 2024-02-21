@@ -1,0 +1,122 @@
+Ansible Roles:
+
+- Create a role
+- Use a role - in a playbook
+
+Locations:
+  Method 1 - roles/  -> relative to the playbook location
+  Method 2 - /etc/ansible/roles/ -> default location
+
+  - /etc/ansible/ansible.cfg
+
+Jinja2 -> templating format - Python - .j2
+
+
+Create role:
+$ mkdir base
+$ cd base
+$ mkdir roles
+$ cd roles
+
+$ ansible-galaxy init demo
+
+$ sudo apt-get install -y tree
+$ tree
+
+$ nano demo/tasks/main.yml
+- name: copy demo file
+  template:
+    src: templates/demo.j2
+    dest: /etc/demo
+    owner: root
+    group: root
+    mode: 0444
+
+$ nano demo/templates/demo.j2
+Welcome to {{ ansible_hostname }}!!
+
+This file was created on {{ ansible_date_time.date }}.
+Go away if you have no business being here.
+
+Contact {{ system_manager }} if anything is wrong.
+
+$ nano demo/defaults/main.yml
+system_manager: admin@test.com
+
+Remove the unwanted directories:
+$ rm -rf demo/handlers demo/files demo/vars demo/tests
+
+
+Use the role:
+$ cd ..
+
+$ nano demo-role.yml
+---
+- name: use demo role playbook
+  hosts: webservers
+  become: yes
+
+  roles:
+    - role: demo
+      system_manager: admin@playbook.com
+
+
+Run the playbook:
+$ ansible-playbook demo-role.yml
+
+
+$ sudo cat /etc/demo
+
+
+
+
+Terraform:
+- Provision Infrastructure
+- Infrastructure as a code
+  - automate
+  - manage versioning
+  - reuse/recreate infrastructure
+- across platforms - AWS, GCP, Azure, DC
+
+
+Steps:
+  - write -> create the Terraform file - .tf/.tf.json
+  - plan -> preview of your changes before executing
+  - apply -> changes are applied here - provisioning
+  - destroy -> destroy the changes made to the infrastructure
+
+  - validate -> validate the Terraform file
+
+
+Verify Terraform installation:
+$ terraform -version
+
+Setup Terraform: https://www.terraform.io/downloads.html
+
+$ cd
+$ mkdir s3back
+$ cd s3back
+
+$ nano creds.tf
+provider "aws" {
+  access_key = ""
+  secret_key = ""
+  token = ""
+  region = "us-east-1"
+}
+
+
+$ nano main.tf
+resource "aws_s3_bucket" "b" {
+  bucket = "my-tf-test-bucket-randomstring"
+  acl = "private"
+
+  tags = {
+    Name = "My bucket"
+    Environment = "Dev"
+  }
+}
+
+$ terraform init
+$ terraform validate
+$ terraform plan

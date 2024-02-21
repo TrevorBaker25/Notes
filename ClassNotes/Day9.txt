@@ -1,0 +1,167 @@
+4 CM tools:
+- Puppet
+  - Pull-based CM Tool
+  - Written: Ruby DSL
+  - Syntax: Ruby
+  - CI files: Manifest
+- Chef
+  - Pull-based CM Tool
+  - Written: Ruby
+  - Syntax: Ruby
+  - CI files: Recipe
+- Ansible
+  - Push-based CM Tool
+  - Written: Python
+  - Syntax: YAML
+  - CI files: Playbook
+- SaltStack
+  - Push-based CM Tool
+  - Written: Python
+  - Syntax: YAML
+
+Ansible:
+- Playbook
+- YAML - Yet Another Markup Language
+- Agentless
+- SSH / winRM
+- CI -> executes Ansible modules - python libraries/scripts
+- Inventory - details about machines/nodes that you want Ansible to configure
+  - hosts -> hostname/HostIP/username/password/port_number
+  - Group the hosts into hostgroups
+  - Manage variables for hosts/hostgroups
+  - 2 formats for writing the inventory:
+    - INI format - default
+    - YAML format
+
+Ansible Architecture:
+- Control Server/Ansible Orchestration engine
+  - Unix based
+  - Can't be Windows based
+  - Python should be installed
+- Nodes
+  - Unix or Windows based
+  - Python should be installed
+
+- Components of Ansible Architecture:
+  - Modules
+    - scripts written in Python
+    - executed inside the nodes - for configuration 
+    - file/service/infrastructure
+    - desired state -> as parameter
+    - Url: https://docs.ansible.com/ansible/2.9/modules/list_of_all_modules.html
+    Eg:- apt, file, service, copy
+  - Module Utilities
+    - helper files for creating modules
+    - reused at the time of module creation
+  - Plugins
+    - additional functionality
+    - executed on the control server
+  - Inventory
+    - hosts & hostgroups
+    - hosts -> default inventory file name
+    - /etc/ansible/hosts -> default inventory file location 
+    - format - INI/YAML
+    - can manage multiple inventory file
+  - Playbooks
+    - Configuration Information
+    - contains one or more plays
+    - play
+      - single set of configuration information
+      - task -> to execute an Ansible modules
+    - YAML format
+  - Ansible Search Path
+    - Different locations/paths - ansible installation
+    - location of inventory file, modules, plugins
+    - /etc/ansible -> default ansible install location
+    - ansible.cfg -> main ansible configuration file - specify the search path
+
+
+Apply CI on the nodes - 2 ways
+- Ad-hoc command
+  - perform a single task
+  - used for rarely performed tasks
+  - making use of the command "ansible"
+  - using the ansible modules for performing the task
+
+  $ ansible [pattern] -m [module] -a "[module options/params]"
+  $ ansible machineA -m apt -a "name=tree"
+
+- Playbook execution
+  - using the command "ansible-playbook"
+
+
+Verify the installation of ansible:
+$ ansible --version
+
+
+Installation of Ansible:
+$ sudo apt-get install software-properties-common
+$ sudo apt-add-repository ppa:ansible/ansible
+$ sudo apt-get update
+$ sudo apt-get install -y ansible
+
+
+SSH into machine:
+
+Machine A -> Machine B
+[B] username & hostname
+[A] $ ssh username@hostname/host_ip
+    -> default ssh port -> 22
+    -> -p port
+
+Machine A = Machine B
+
+$ ssh username@localhost
+$ ssh localhost
+$ ssh localhost -p 42006
+    -> 42006 - lab machine ssh port
+
+Password based SSH - using the password
+
+Passwordless SSH:
+Machine A[Ansible Control Server] to be able to SSH into Machine B[Ansible Nodes] without any password.
+
+[A]$ ssh-keygen [to generate a SSH keypair]
+[A]$ ls ~/.ssh     - VERIFY KEYPAIR
+
+[A]Copy the pub key ~/.ssh/id_rsa.pub 
+[A]$ cat ~/.ssh/id_rsa.pub 
+
+[B]Paste the pub key into ~/.ssh/authorized_keys
+[B]$ nano ~/.ssh/authorized_keys
+PASTE THE PUB KEY
+
+
+$ ssh localhost -p 42006
+
+
+Check port: 
+$ netstat -tulpn
+
+
+Inventory:
+Default: /etc/ansible/hosts
+
+$ sudo nano /etc/ansible/hosts
+[webservers]
+localhost
+
+$ ansible --list all
+$ ansible --list webservers
+
+
+$ ansible all -m ping
+[OR] 
+$ ansible -m ping all
+
+$ ansible webservers -m ping
+$ ansible localhost -m ping
+
+
+$ sudo nano /etc/ansible/hosts
+[webservers]
+localhost ansible_ssh_port=42006
+
+[OR]
+[webservers]
+localhost:42006

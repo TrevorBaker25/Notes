@@ -1,0 +1,90 @@
+Cloud Service Model:
+
+SaaS -> Software as a Service        - Eg:- MS Ofice 365, Salesforce, Shopify
+PaaS -> Platform as a Service        - Eg:- Elastic Beanstalk, EKS, ECS, OpsWorks
+IaaS -> Infrastructure as a Service  - Eg:- EC2, Azure Instances
+
+
+Cloud Platform:
+- Compute, Storage, Network
+
+Eg:- AWS(Amazon Web Service), Azure(Microsoft), GCP(Google Cloud Platform), Oracle Cloud
+
+
+
+
+Version Control System:
+- revision control
+- source control
+
+Installation of git:
+$ sudo apt install -y git
+
+Check whether git is installed or not:
+$ git --version
+
+Create a directory:
+$ mkdir myrepo
+
+Enter the directory:
+$ cd myrepo
+$ ls -la
+
+Configure git tool:
+Name & Email
+
+Levels of Configuration:
+3 levels:
+  - system -> for the entire machine
+  - global -> for the current user
+  - local  -> for the local directory/repo
+
+local -> highest preference
+global -> second highest preference
+system -> lowest preference
+
+$ git config --list
+
+$ git config --global user.name "YOUR_NAME"
+$ git config --global user.email "YOUR_EMAIL_ID"
+
+$ git config --list
+
+Initialize the repo on a folder:
+$ git init
+
+Check the status of a git repo:
+$ git status
+
+Working directory:
+- Untracked
+- Tracked (git add)
+  - modified (edited)
+- Commit - created a version
+
+$ echo "File 1 content" > file1.txt 
+$ git add file1.txt
+$ git add .
+
+Add a new version:
+$ git commit -m "My first commit with file1.txt - single line file"
+$ git log
+
+$ echo "second line" >> file1.txt
+$ echo "file 2 content - single line" > file2.txt
+$ git add .
+$ git commit -m "My second commit with second line added to file1.txt and new single line file file2.txt"
+[OR]
+$ git commit -a -m "My comment here"
+
+
+$ git log
+$ git log --oneline
+
+Switch between commits:
+$ git checkout FIRST_COMMIT_ID
+
+$ git log --oneline --all
+$ git log --oneline --all --decorate
+
+$ git checkout master

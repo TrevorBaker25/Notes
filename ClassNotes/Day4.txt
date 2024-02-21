@@ -1,0 +1,135 @@
+Remote Repo -> clone -> Local Repo
+
+Remote Repo & Local Repo
+
+Local Repo -> making changes - local commits
+
+Local Repo -> sync to Remote repo => push
+Remote Repo -> sync to Local repo => pull
+
+Remote Repo -> sync the repo db to Local repo without changing the working dir => fetch
+
+pull = fetch+checkout
+
+
+https://github.com/
+
+$ cd myrepo
+
+View the remotes:
+$ git remote
+
+- Create a new empty repo in Github
+  - New repo
+  - Repository name
+  - Visibility: Public
+  - Create repo
+- Connect our local repo to this newly created github repo
+  - Add a new remote
+  $ git remote add origin https://github.com/abhijithvg/myrepo-jan24.git
+  $ git remote
+  $ git remote -v
+  $ git branch
+  - Rename our local branch name to "main":
+  $ git branch -M main
+  $ git branch
+- Push our local repo to the remote repo
+  $ git push -u origin main
+  $ git push -u <remote_name> <branch_name>
+
+
+Authorization:
+https & ssh
+$ ssh-keygen
+[Press enter 3 times]
+
+~/.ssh/id_rsa   -> private key
+~/.ssh/id_rsa.pub   -> public key
+
+$ ls -la ~/.ssh
+$ cat ~/.ssh/id_rsa.pub
+
+Github > Profile Pic > Settings > SSH & GPG Keys > New SSH Key
+[OR]
+https://github.com/settings/
+
+
+Verify the setup:
+$ ssh -T git@github.com
+
+$ git remote add sshorigin YOUR-GITREPO-SSHURL
+$ git remote add sshorigin git@github.com:abhijithvg/myrepo-jan24.git
+
+To remove a remote:
+$ git remote remove <remote_name>
+
+$ git push -u sshorigin main
+
+
+
+HOW TO MAKE A BRANCH 
+
+git checkout -b "trevor"
+
+HOW TO LIST BRANCHS IN YOUR REPO
+
+git branch -r <------------------ ( -r means remote )
+
+
+HOW TO SWITCH IN BETWEEN BRANCHES 
+
+
+git switch branch_name
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$ cd ..
+
+$ git clone YOUR-GITREPO-SSHURL
+$ git clone git@github.com:abhijithvg/myrepo-jan24.git
+
+$ cd myrepo-jan24
+
+
+Add a new file to the remote repo via Github UI
+  Github repo > Add File > Create new file
+  Filename: remotefile.txt
+
+$ git pull origin main
+
+$ echo "my local file" > localfile.txt
+$ git add .
+$ git commit -m "Added local file from the lab machine"
+$ git push origin main
+
+
+Public Repo:
+Pull & Clone -> can use https url
+Push -> need authorization/ if authorized - use ssh url
+
+Private Repo:
+Pull & Clone -> need authorization/ if authorized - use ssh url
+Push -> need authorization/ if authorized - use ssh url
+
+
+Clone:
+Use ssh url -> origin -> ssh url
+Use https url -> origin -> https url
+
+Add:
+You can decide which remote to which url
+
+.V9vqBZY:u2pMYG

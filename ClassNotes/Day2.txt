@@ -1,0 +1,140 @@
+Check the current logged in user:
+$ whoami
+
+Change your user to root user:
+$ sudo su
+$ whoami
+# exit
+
+Remove a file:
+$ rm file_touch.txt
+$ rm file_touch.txt file_nano.txt    [2 files will be removed]
+$ rm file_*.txt    [all txt files with filename starting with file_ will be removed]
+$ rm file_*    [all files with filename starting with file_ will be removed]
+
+Rename a file:
+$ echo "my file" > file3.txt
+$ mv file3.txt file_renamed.txt
+$ cat file_renamed.txt 
+
+Duplicate a file:
+$ cp file_renamed.txt file_copy.txt
+$ cat file_copy.txt
+
+Come out of the current directory to the parent directory:
+$ cd ..
+
+Removing a directory:
+$ mkdir New_dir
+$ rmdir New_dir
+$ rm -rf Testdir
+	-r -> recursive
+	-f -> force
+
+Package Manager:
+APT -> Ubuntu, Debian
+YUM -> CentOS, Fedora
+APK -> Alpine
+
+Install a package:
+$ git
+$ git --version
+$ tree --version
+$ apt install tree
+$ sudo apt install tree
+$ tree --version
+
+$ sudo cat /etc/apt/sources.list
+$ which tree
+
+History of commands:
+$ history
+$ history | tail -n 4
+$ history | grep apt
+
+Command line text editors:
+
+vi
+nano
+
+vi
+$ vi file1.txt
+
+i -> insert mode
+Esc -> reset/switch the mode
+
+Esc :wq      -> write/save the contents of a file and quit the edit - keyboard sequence
+
+nano 
+$ nano file2.txt
+
+Ctrl+X -> y -> Enter       -> save & quit a file
+
+
+Tar & Extract tar files:
+
+Create a tar from files:
+$ tar -zcvf file.tar.gz file1.txt file2.txt
+
+z -> gzip compression -> .tar.gz
+j -> bzip2 compression -> .tar.bz2
+c -> create tar
+v -> verbose
+f -> filename
+
+See the contents of a tar file without extracting:
+$ tar -ztvf file.tar.gz
+
+t -> listing
+
+Extracting files from a tar file:
+$ mkdir extracteddir
+$ tar -zxvf file.tar.gz -C extracteddir
+
+x -> extracting
+
+$ ls extracteddir/
+
+
+Filter/search the contents of a file:
+$ nano contentfile.txt
+This is PG DevOps course
+This is a file called contentfile
+
+$ cat contentfile.txt | grep DevOps
+
+
+APT - package list:
+
+$ sudo cat /etc/apt/sources.list
+
+$ sudo nano /etc/apt/sources.list
+[Add the new repo for the package]
+$ sudo apt update
+$ sudo apt install package_name
+
+
+
+DevOps:
+
+DEV 							OPS
+Writing the code				Deployment, Monitoring & Maintenance
+
+Mindset
+Skillset - competencies
+
+Problems:
+- Surprises in production
+- Deployments are manual & error prone
+- Longer time to market
+- Lead time to fix errors will be longer
+- chaos - occassional
+
+DEV 					OPS
+Plan					Take Release
+Code					Deploy
+Test 					Operate/Config
+Make Release			Monitor
+
+
+DASA -> DevOps Agile Skills Association
