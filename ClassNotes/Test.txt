@@ -1,0 +1,1 @@
+looks like I can add to a folder within a folder.  just have to git clone the ssh to that folder in order to do so.  Now to pull these changes from github back to the local. 
