@@ -1,4 +1,168 @@
-looks like I can add to a folder within a folder.  just have to git clone the ssh to that folder in order to do so.  Now to pull these changes from github back to the local. 
+$ cd s3back
+
+$ nano creds.tf
+provider "aws" {
+  access_key = ""
+  secret_key = ""
+  token = ""
+  region = "us-east-1"
+}
+
+provider "aws" {
+  access_key = "ASIAVIOVSBN4KK2IWSEI"
+  secret_key = "6R+obc0mmehJbOvM+mOaSNzQ+NH5B5mu0ueRnq7N"
+  token = "FwoGZXIvYXdzELj//////////wEaDGXDUnfZ5jMQRggLVSK1AS1HINUl3MuK2WahYk5nnNlGO6H9MYlH4DdsmXNKm/qM6029DaQ62WFeNw60KsdF8VfoHqVI74JJ6uisyXm3fNC3V2FXKwe1T7UlpJes96eyldIu9W+62bng5JXchS5OfkvaV5qtWCwKWXgmZZ1WXnCQAnfWMDSd29CI2W/jfBcqNkO8UFs+K/iBjEar8YiTm9fOtvkkZP4/FLFsIsKpLUSDyjLaTkz5U0mZoxYpInzRKjZTmCIone/nrgYyLTWDMmSnRa+nsxm5InLvNSfK1pUEzZFuYpiH1ocevteMMP5+RHsoJq3sXOZroQ=="
+  region = "us-east-1"
+}
 
 
-Now i have used git pull to pull changes to this document.  now i'm gonna push this back to git hub 18:48
+$ nano main.tf
+resource "aws_s3_bucket" "b" {
+  bucket = "my-tf-test-bucket-randomstring"
+  acl = "private"
+
+  tags = {
+    Name = "My bucket"
+    Environment = "Dev"
+  }
+}
+
+$ terraform init
+$ terraform validate
+$ terraform plan
+
+$ terraform apply
+$ terraform destroy
+
+
+
+
+
+
+Docker:
+
+- Containerization tool
+
+- way of packaging the application with its dependencies
+  - templates -> docker images
+- containers are instances of images
+
+
+- Hello.java > compilation > Hello
+- Requiremetns for deploymentt of Java application:
+  - machine/server - OS
+  - java jdk/jre installed
+  - Hello executable 
+
+
+VMs v/s Containers
+
+VMs:
+- Hardware level virtualization 
+- Virtualization layer -> Hypervisor
+- entire OS - install the OS - booting required
+- heavyweight
+- slow
+
+Containers:
+- OS level virtualization
+- Containerization layer
+- no entire OS - no boot process involved
+- lightweight
+- fast
+
+- a container can be created only from an image - it determine the OS
+
+- a way of packaging the application with its dependencies -> image
+- ideally containers are meant to run a single process
+- your application will be running when the container starts
+- can create n number of containers from a single image
+- each containers are isolated
+
+- Linux kernel capabilities:
+  - Namespaces
+  - cGroups
+
+- Hyper-V / VM running linux -> Windows - WSL
+
+Layered concept:
+- FileSystem - AuFS -> Another Union File System
+
+
+Docker Architecture:
+- Client-Server Architecture
+- 3 components
+  - Docker Server / Daemon / Host / Engine
+    - daemon process - dockerd
+    - responsible for creating & managing the docker objects
+  - Docker Client
+    - docker cli/command - docker
+    - way for you to communicate with the docker server
+    - can talk with multiple docker daemons
+    - API calls
+  - Docker Registry
+    - Storage for docker images
+    - Docker Hub -> default registry - managed by Docker
+    - https://hub.docker.com/
+
+Run = create + start
+
+
+Docker Installation:
+
+$ sudo apt-get update 
+$ sudo apt-get install \
+  apt-transport-https \
+  ca-certificates \
+  curl \
+  gnupg \
+  lsb-release
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+$ echo \
+"deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+$ sudo apt update
+$ sudo apt-get install docker-ce
+$ docker  --version
+
+
+Verify Docker installation:
+$ docker --version
+$ docker version
+
+Verify whether the setup is working:
+$ docker <action> <options>
+
+$ docker run <image-name>
+$ docker run hello-world 
+
+$ docker run hello-world:tag_name
+  default tag: latest
+
+Docker Registry: https://hub.docker.com/
+
+$ docker search nginx
+
+
+$ docker run hello-world
+
+$ docker images
+
+$ docker pull nginx
+$ docker images
+
+
+To see the list of conatainers currently running:
+$ docker ps
+
+History of containers:
+$ docker ps -a
+
+$ docker run nginx
+
+[NEW TERMINAL TAB] $ docker ps
+
+$ docker run -d nginx
+  -d -> detached
