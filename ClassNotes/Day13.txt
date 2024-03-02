@@ -1,0 +1,123 @@
+$ docker ps -a
+
+$ docker run ubuntu
+$ docker ps -a
+
+$ docker run -i -t ubuntu
+$ docker run -t -i ubuntu
+$ docker run -ti ubuntu
+$ docker run -it ubuntu
+  -i -> interactive
+  -t -> terminal
+
+Ctrl+P+Q -> shortcut
+  - to come out of a container terminal without exiting the process
+  - detach the terminal from the container process
+
+Default executable within a container -> PID 1 -> process id 1
+
+Enter inside a running container:
+Method1: Connect to the PID 1 process of the running container
+$ docker attach <container_id/container_name>
+# ps -aux
+Ctrl+P+Q
+
+Method2: Create a new process and attach your terminal to that process
+$ docker exec -ti <container_id/container_name> <new_process>
+$ docker exec -ti <container_id/container_name> /bin/bash
+# ps -aux
+# exit
+
+$ docker ps
+
+Start a stopped/exited container:
+$ docker start <container_id/container_name>
+
+Stop a container:
+$ docker stop <container_id/container_name>
+
+
+Delete containers:
+
+Delete a stopped container:
+$ docker rm <container_id/container_name>
+
+Delete a running container:
+$ docker rm -f <container_id/container_name>
+
+
+Delete Images:
+$ docker images
+$ docker rmi <image_name/image_id>
+
+
+Port Mapping:
+Host Port -> Container Port
+
+Random Port Mapping:
+Host Port -> random
+-P -> random port mapping
+$ docker run -d nginx
+$ docker run -d -P nginx
+Browse in Lab machine: localhost:<mapped_host_port>
+
+Custom Port Mapping:
+Host port -> custom
+-p -> custom port mapping
+$ docker run -d -p7686:80 nginx
+Browse in Lab machine: localhost:7686
+
+
+$ docker exec -ti <container_id/container_name> /bin/bash
+Default serve location of nginx container: /usr/share/nginx/html
+Default serve file of nginx container: /usr/share/nginx/html/index.html
+
+# echo "My custom html text file" > /usr/share/nginx/html/index.html
+
+
+Volume Mapping:
+$ mkdir mydev
+$ echo "My index file" > mydev/index.html
+$ echo "My dev file - from lab machine" > mydev/dev.html
+
+$ docker run --name mynginx -dP -v $PWD/mydev:/usr/share/nginx/html nginx
+
+If you are in the user_home dir:
+$ docker run --name mynginx -dP -v /home/your_user_name/mydev:/usr/share/nginx/html nginx
+
+If you are in the user_home/mydev dir:
+$ docker run --name mynginx -dP -v /home/your_user_name/mydev/mydev:/usr/share/nginx/html nginx
+
+$ echo "MY UPDATED INDEX FILE FROM LOCAL MACHINE" > mydev/index.html
+
+
+$ docker exec -ti mynginx /bin/bash
+# cd /usr/share/nginx/html 
+# echo "My new file from container" > container.txt
+
+
+To get the port mapping details:
+$ docker port <container_id/container_name>
+$ docker port mynginx
+
+To get of the log of the default executable of a container:
+$ docker logs <container_id/container_name>
+$ docker logs mynginx
+$ docker logs -f mynginx
+
+Inspect a container:
+$ docker inspect <container_id/container_name>
+$ docker inspect mynginx
+
+Inspect an image:
+$ docker image inspect <image_id>
+$ docker image inspect nginx
+
+
+Remove all containers:
+$ docker rm -f $(docker ps -aq)
+
+
+Create a docker hub account - free account
+docker_id/password
+
