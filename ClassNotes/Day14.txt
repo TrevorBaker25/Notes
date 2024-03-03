@@ -1,0 +1,192 @@
+Custom Image Creation:
+
+- create a file - Dockerfile
+- adding instructions - Dockerfile
+- Instructions:
+  - FROM - used to specify the parent/base image - determine the OS - FROM SCRATCH
+  - RUN - execute commands at the time of image creation
+  - COPY - to copy files from the host machine to within the image
+  - EXPOSE - to specify the port that the container will be listening to
+  - CMD - used to specify the default executable of containers
+        - can be overwritten at the time of container creation
+        - used to pass parameters to ENTRYPOINT instruction
+  - ENTRYPOINT - used to specify the default executable of containers
+        - cannot be overwritten easily
+        - use the --entrypoint option during container creation
+
+
+$ mkdir demo
+$ cd demo
+$ nano Dockerfile
+FROM ubuntu
+RUN apt-get update
+RUN apt-get install -y nginx
+COPY index-custom.html /var/www/html/index.html
+EXPOSE 80
+CMD nginx -g 'daemon off;'
+
+
+$ echo "<h1>WELCOME TO MY CUSTOM NGINX</h1>" > index-custom.html
+
+Create an image from this Dockerfile:
+$ docker build -t customnginx -f <specify_the_dockerfile_name> .
+$ docker build -t customnginx .
+    . -> denotes the build context - pwd - location of the Dockerfile
+
+
+Dockerfile       -> $ docker build -t customnginx .
+dockerfile_app2  -> $ docker build -t customnginx -f dockerfile_app2 .
+
+
+$ docker images
+
+Create a container from the custom image:
+$ docker run -dP customnginx
+$ docker ps
+
+$ docker run -dP customnginx /bin/bash
+
+
+$ nano Dockerfile
+FROM ubuntu
+RUN apt-get update
+RUN apt-get install -y nginx
+COPY index-custom.html /var/www/html/index.html
+EXPOSE 80
+#CMD nginx -g 'daemon off;'
+ENTRYPOINT nginx -g 'daemon off;'
+
+
+$ docker build -t customnginxentry .
+
+$ docker run -dP customnginxentry /bin/bash
+
+$ docker run -dP --entrypoint /bin/bash customnginxentry
+
+
+Custom Image creation - From a running container:
+
+$ docker run -ti --name centos centos /bin/bash
+# cd /etc/yum.repos.d/
+# sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+# sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+# yum update -y
+# yum install -y net-tools nc
+# exit
+
+
+[Open a new terminal lab]
+Create a custom image from a running container:
+$ docker commit centos centos-net
+$ docker images
+
+
+Push images to DockerHub:
+
+- Create an account with DockerHub:
+  https://hub.docker.com/
+  - dockerid/password
+
+- Tag your custom image with your dockerid
+$ docker tag IMAGE_ID YOUR_DOCKER_ID/mycustommarimage:latest
+$ docker tag 56ec0b3a065b abhijithvg/mycustommarimage:latest
+$ docker images
+
+- Authenticate
+$ docker login
+docker_id/password
+
+- Push our image to dockerhub:
+$ docker push YOUR_DOCKER_ID/mycustommarimage:latest
+$ docker push abhijithvg/mycustommarimage:latest
+
+
+Work with private docker registry:
+$ docker pull registry:2
+
+$ docker run -d -p 5000:5000 --restart=always --name registry registry:2
+
+- Tag your image with the registry url:
+$ docker tag IMAGE_ID localhost:5000/mycustommarimage:latest
+$ docker tag 56ec0b3a065b localhost:5000/mycustommarimage:latest
+
+- Push the image to the local registry:
+$ docker push localhost:5000/mycustommarimage:latest
+
+Browse: localhost:5000/v2/_catalog
+
+Container Cleanup:
+$ docker rm -f $(docker ps -aq)
+
+
+Docker Networking:
+
+$ docker network ls
+
+Default Networks:
+- bridge
+  -> default bridge network
+  -> default network for the containers
+- host
+  -> used by Docker
+  -> shared by the host machine and docker
+- none
+  -> if you don't want any network to be associated with a container
+
+
+Default Bridge Network:
+  - default network used
+  - containers within this network will be able to communicate with eachother using only the IP address
+  - can't use container name
+  - doesn't support container restart -> when it comes to communication
+
+User-defined Bridge Network:
+  - containers within this network will be able to communicate with eachother using the container name itself
+  - supports container restart
+  - not dependent on the IP address
+
+
+$ docker run -ti --rm centos-net /bin/bash
+# ifconfig
+# exit
+    --rm -> container stops - it will be removed
+
+[OPEN A NEW TERMINAL TAB]
+$ docker ps
+$ docker inspect CONTAINER_ID
+
+$ docker inspect DOCKER_OBJECT_TYPE OBJECT_ID
+
+
+Create a custom network:
+$ docker network create exnet
+$ docker network ls
+
+$ docker inspect exnet
+
+Create a container in the custom network:
+$ docker run -ti --rm --network exnet centos-net /bin/bash
+# ifconfig
+# exit
+
+
+[OPEN A NEW TERMINAL TAB]
+$ docker ps
+$ docker inspect CONTAINER_ID
+
+$ docker run -ti --rm --name mycentos centos-net /bin/bash
+# exit
+
+[OPEN A NEW TERMINAL TAB]
+$ docker inspect mycentos
+
+Connect a network:
+$ docker network connect exnet mycentos
+$ docker inspect mycentos
+
+Disconnect a network:
+$ docker network disconnect exnet mycentos
+$ docker inspect mycentos
+
+
+
