@@ -1,0 +1,103 @@
+$ docker network ls
+
+[T1] $ docker run -ti --rm --name centos1 --network exnet centos-net /bin/bash
+     # ping centos2
+     # exit
+
+[T2] $ docker run -ti --rm --name centos2 --network exnet centos-net /bin/bash
+     # ping centos1
+     # exit     
+
+[T3] $ docker ps
+     $ docker inspect exnet
+
+$ docker network rm exnet
+$ docker network ls
+
+
+Docker Compose:
+
+Verify Docker Compose:
+$ docker-compose --version
+
+Install Docker Compose:
+[USE THIS] https://docs.docker.com/compose/install/standalone/
+[DON'T USE THIS]$ sudo pip install docker-compose
+
+Verify Docker Compose:
+$ docker-compose --version
+
+$ mkdir compose-test
+$ cd compose-test
+
+$ nano docker-compose.yml
+version: '2'
+services:
+  compose-app:
+    image: centos-net
+    links:
+      - compose-db
+    command: sleep infinity
+
+  compose-db:
+    image: redis
+    expose:
+      - "6379"
+
+
+$ docker-compose up -d
+
+
+$ sudo pip uninstall docker-compose
+$ sudo curl -SL https://github.com/docker/compose/releases/download/v2.24.6/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+$ sudo chmod +x /usr/local/bin/docker-compose
+
+$ docker-compose --version
+
+$ docker-compose up -d
+
+$ docker-compose ps
+
+$ docker-compose exec compose-app /bin/bash
+# nc compose-db 6379
+
+ping
+
+set name Abhi
+
+get name
+
+Ctrl+C
+# exit
+
+
+$ docker-compose down
+
+
+
+
+
+Project 1:
+Tools:
+- Terraform
+- Ansible
+- AWS
+
+- Terraform - provision AWS EC2 instance - with keypair
+    - Python / manually SSH and setup
+- Ansible - to configure - tools inside the EC2 instance
+    - Java
+    - Jenkins
+
+
+Project 2:
+Tools:
+- Git
+- GitHub
+- Docker
+- Docker Hub
+- Jenkins
+- Linux
+
+- Linux - install Git, Docker, Jenkins - create a repo with GitHub - Push - Jenkins triggered - Clone the repo, Package the latest code as an Image using Dockerfile, Image should be pushed to Docker Hub - Test the new image - create a container from that.
+
