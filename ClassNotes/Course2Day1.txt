@@ -1,0 +1,161 @@
+Container Orchestration:
+
+Kubernetes:
+- k8s
+
+Kubernetes Architecture:
+- Cluster - multiple machines
+- Master/Slave Architecture
+
+- Control Plane
+  - from this you will be able to manage the entire cluster
+  - by default no containers are scheduled on this machine
+  - multiple control plane
+  - atleast one control plane
+  - Components:
+    - kube-apiserver -> API calls
+    - kube-scheduler -> decide where the containers will be created/scheduling
+    - kube-controller-manager -> manage all the k8s controllers
+    - etcd -> key/value storage - to store all the information about the cluster
+
+    - (optional) cloud-controller-manager -> only if the cluster is on cloud - cloud services
+
+- Nodes
+  - machines where the containers are scheduled
+  - one or more nodes - part of a cluster
+  - Components:
+    - kubelet -> agent of k8s 
+    - kube-proxy -> networking component
+    - container runtime -> containerization tool - docker
+    - pods -> lowest level object in k8s -> containers are created inside
+      - single container pod
+      - multi container pod
+
+
+Single Node Cluster - 1 machine (control plane & node)
+Multi Node Cluster - 2 or more machines (control plane + node)
+
+
+Interact with a k8s cluster:
+- kubectl -> cli of k8s - control plane 
+  - create an object -> imperative approach
+  - create object from yaml/json configuration file - declarative approach
+- kubeadm -> tool used to create a k8s cluster
+
+
+Syntax:
+
+$ kubectl [command] [TYPE] [NAME] [Flags/options]
+
+$ kubectl get pod [List of pods within the cluster]
+$ kubectl get pod pod_name    [Information about the pod with the name pod_name]
+
+
+Kubernetes Installation & Cluster setup:
+
+kubeadm, kubectl, kubelet
+
+kubeadm -> create a cluster
+kubectl -> cli of k8s - interact with the kube-apiserver
+kubelet -> agent of k8s
+
+
+Verify the installation:
+$ kubectl version
+$ kubeadm version
+$ kubelet --version
+
+https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/
+
+Initialize a k8s cluster:
+$ sudo kubeadm init
+$ sudo kubeadm reset
+
+$ sudo su
+
+To fix the kubelet error:
+# nano /etc/docker/daemon.json
+{
+  "exec-opts": ["native.cgroupdriver=systemd"]
+}
+
+Restart docker:
+# systemctl restart docker
+# systemctl status docker
+
+
+# kubeadm init --pod-network-cidr=10.244.0.0/16
+[Required for the flannel network plugin]
+
+# exit
+
+$ mkdir -p $HOME/.kube
+$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+$ kubectl version
+
+$ kubectl get nodes
+
+
+https://kubernetes.io/docs/concepts/cluster-administration/addons/#networking-and-network-policy
+
+Install Networking Component (Flannel):
+
+$ kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+
+$ kubectl get nodes
+
+$ kubectl get pod
+$ kubectl get pod -A
+
+
+- Single Container pod:
+$ kubectl run tomcat --image=tomcat:8.0
+$ kubectl get pod
+pod -> pod, pods, po
+
+$ kubectl describe pod tomcat
+
+$ kubectl get nodes
+node -> node, nodes, no
+
+$ kubectl describe nodes YOUR_NODE_NAME
+
+
+Remove the taint:
+$ kubectl taint node YOUR_NODE_NAME TAINT_NAME-
+$ kubectl taint node YOUR_NODE_NAME node-role.kubernetes.io/master:NoSchedule-
+
+$ kubectl get pod
+
+
+Create a multi-container pod:
+- using YAML
+
+$ nano sample.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multi-container
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.10-alpine
+    ports:
+      - containerPort: 80
+  - name: alpine
+    image: alpine:3.5
+    command: ["watch", "wget", "-qO-", "localhost"]
+
+Execute the YAML file:
+$ kubectl create -f sample.yaml
+
+$ kubectl get pod
+
+$ kubectl describe pod multi-container
+
+
+$ kubectl delete pod tomcat
+$ kubectl delete -f sample.yaml
+
