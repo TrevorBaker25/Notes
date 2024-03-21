@@ -1,0 +1,118 @@
+k8s terminologies & objects:
+
+Labels & Selectors:
+
+obj1 - env: dev, tier: frontend
+obj2 - env: dev, tier: backend, type: custom
+
+Equality-based selector:
+
+tier == backend => obj2
+env == dev => obj1, obj2
+tier != backend => obj1
+
+Set-based selector:
+
+tier in (backend) => obj2
+tier in (backend, frontend) => obj1, obj2
+tier notin (backend) => obj1
+!type => obj1
+
+Replication Controller -> equality-based selector
+ReplicaSet  -> set-based selector
+
+
+Controllers:
+- Replication Controller -> manage the replicate - scaling - application pods
+- DaemonSet Controller -> manage DaemonSet objects - one copy of that daemonset pod is running on all the nodes that are there as part of the cluster
+- Job Controller
+
+- ReplicaSet - newer version of Replication Controller -> manage the replicate - scaling - application pods
+
+
+Deployment
+
+Service: networking between containers and from outside the cluster to within the cluster
+- ClusterIP -> will be accessible only from within the cluster -> IP of the cluster - default
+- NodePort -> will be accessible via the nodes - end users -> IP of any node
+- LoadBalancer -> connected to the loadbalancer application of the cloud
+- ExternalName -> CNAME
+
+Storage:
+- PV - Persistent Volume
+- PVC - Persistent Volume Claim
+
+Configuration Objects:
+- Secrets
+- ConfigMap
+
+
+
+Continuous Monitoring:
+
+- Infrastructure
+- Application
+- Network
+- Real-time
+
+Risks: hardware, software, license-related
+Compliances: Policy/standards must be met
+Security risks: unwanted port open, monitor the traffic
+
+
+Nagios:
+  - Nagios Core -> free & fundamental - need some programming - UI is only for visualization
+  - Nagios XI -> enterprise variant - licensed - configure using the UI
+
+  Agents:
+  - NRPE - Nagios Remote Plugin Executor
+  - NCPA - Nagios Cross Platform Agent
+
+
+Nagios Core Installation:
+  - Install the dependant packages
+  - Install Nagios Core 4.4.6
+  - Install Nagios & NRPE plugins
+
+Nagios Setup:
+
+$ sudo kubeadm reset
+
+Docker container (Nagios Core):
+$ docker run -d --name nagios -p 8081:80 manios/nagios:latest
+$ docker ps
+
+Browse: localhost:8081
+nagiosadmin/nagios
+
+
+Nagios Core: .cfg -> configuration files
+
+Nagios Configuration file location: /opt/nagios/etc/
+
+$ docker exec -ti nagios /bin/bash
+# cd /opt/nagios/etc/
+# ls
+
+nagios.cfg -> default Nagios core configuration file
+
+# apk add nano
+# nano nagios.cfg
+
+
+
+/etc/demo/abhi.cfg
+/etc/demo/abhi1.cfg
+
+cfg_file=/etc/demo/abhi.cfg
+cfg_file=/etc/demo/abhi1.cfg
+
+[OR]
+
+cfg_dir=/etc/demo
+
+Path configurations:
+
+cfg_file=FULL_PATH TO YOUR CONFIGURATION FILE
+[OR]
+cfg_dir=FULL PATH TO YOUR CONFIGURATION FILES DIRECTORY
