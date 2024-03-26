@@ -1,0 +1,187 @@
+Configuration Management:
+
+- CM
+- Consistency in infrastructure/configuration
+- Automate 
+
+CM Tools:
+  - CM server / Control Server
+  - Nodes/Worker
+
+Types of CM Tools:
+2 types:
+  - Pull-based CM Tool
+    - Agent based
+    - constant polling - from the node to the CM server
+      - agent will be sending the current state of the node to the CM server
+      - server will store this information about the node
+    - agent
+      - responsible for initiating the communication
+      - downloading the CI (Configuration Information) from the server to the node
+      - implementation of the CI on the node
+    - agent management - your responsibility
+    - Control server should be always running
+    - setup can be a bit complex
+    Eg:- Chef & Puppet
+
+  - Push-based CM Tool
+    - Agent-less
+    - From the CM server to the node
+    - gather the information about the node at the time of pushing the CI
+    - server stores this information about the node
+    - server
+      - responsible for initiating the communication
+      - sending the CI to the nodes
+      - implementation of CI on the nodes
+    - Control Server need not be running always
+    - setup will be simpler
+    Eg:- Ansible & Saltstack
+
+
+4 CM Tools:
+- Puppet
+  - pull-based CM tool
+  - Written: Ruby DSL
+  - Syntax: Ruby
+  - CI files: Manifest
+- Chef
+  - pull-based CM tool
+  - Written: Ruby
+  - Syntax: Ruby
+  - CI files: Recipe
+- Ansible
+  - push-based CM tool
+  - Written: Python
+  - Syntax: YAML
+  - CI files: Playbook
+- SaltStack
+  - push-based CM tool
+  - Written: Python
+  - Syntax: YAML
+
+
+Infrastructure as Code (IaC)
+- convert your infrastructure into code
+- automation
+- versioning of infrastructure
+- cross-platform (depending on the tools)
+
+Imperative & Declarative approach:
+- Imperative - Ansible adhoc command execution
+- Declarative - Ansible playbook execution
+
+
+Ansible:
+- Python-based CM tool
+- Push based CM tool
+- Agentless
+- Playbooks - YAML
+- Unix & Windows machines can be configured
+- Ansible Controller (cannot be a Windows machine) & Nodes (can be Windows)
+- SSH/winRM
+- CI -> executes Ansible modules on the nodes - Python, ruby or shellscripts - libraries/scripts
+- Inventory - details about the machines/nodes that you want Ansible to configure
+  - text based file
+  - hosts -> default inventory file name
+  - host -> hostname/hostIP/username/password/port_number
+  - hostgroup -> groups of hosts 
+  - 2 formats for writing the inventory file:
+    - INI format (default)
+    - YAML format 
+
+
+Components of Ansible:
+- Control Machine
+  - Control Server / Ansible Engine / Ansible Orchestration Engine
+  - Unix based
+  - can't be Windows based
+  - Python 2.7 or above should be installed
+- Nodes
+  - Unix or Windows based machines
+  - Python 2.7 or above should be installed
+- Inventory
+  - host files
+  - add nodes to the Ansible ecosystem
+- Playbook
+  - CI file
+  - Contain one or more plays
+  - play
+    - collection of tasks
+- Task
+  - Execution of an Ansible module
+  - a single process (CI) execution
+- Module
+  - script written in Python (Ruby & shell)
+  - executed inside the nodes for configuration
+  - file/service/infrastructure
+  Eg:- apt, file, service, copy, shell, command, template etc
+- Role
+  - organize playbooks
+  - directory structure - different playbooks will be managed
+  - allows you to share & reuse the CI
+- Facts
+  - Information gathered by Ansible - from the nodes - stored in a Facts - global variable
+- Handlers
+  - inside playbook & roles
+  - tasks that are triggered in response to something
+
+Ansible Galaxy - market place for Ansible Roles
+
+
+
+Verify Ansible Installation:
+$ ansible --version
+
+Setup Ansible:
+$ sudo apt-get install -y software-properties-common
+$ sudo apt-add-repository ppa:ansible/ansible
+$ sudo apt-get update
+$ sudo apt-get install -y ansible
+
+Verify Ansible Installation:
+$ ansible --version
+
+SSH into machines:
+$ ssh username@hostname/hostIP -p <port_number>
+    -> default ssh port -> 22
+
+
+SSH into master:
+$ ssh labsuser@localhost
+
+Passwordless SSH:
+Get Worker Private IPs:
+Worker1: 172.31.44.152
+Worker2: 172.31.47.16
+
+$ ssh labsuser@WORKER1IP
+$ ssh labsuser@172.31.44.152
+$ ssh labsuser@WORKER2IP
+$ ssh labsuser@172.31.47.16
+
+
+Machine A[Ansible Master] to be able to ssh into Machine B[Ansible Node - Worker1 & Worker2] without any password.
+
+[A-master]
+[A-master] Generate the SSH keypair
+[A-master] $ ssh-keygen
+          [Press Enter 3 times]
+
+[A-master] Print & copy the public key of Master
+[A-master] $ cat ~/.ssh/id_rsa.pub
+
+[B-master,worker1,worker2] Create a new file ~/.ssh/authorized_keys & paste the public key from Machine A
+
+[B-master,worker1,worker2] $ nano ~/.ssh/authorized_keys       [paste the public key from Machine A]
+
+
+[B-master,worker1,worker2] $ cat ~/.ssh/authorized_keys
+
+
+[A-master]
+$ ssh labsuser@localhost  
+# exit
+$ ssh labsuser@WORKER1IP  
+# exit
+$ ssh labsuser@WORKER2IP  
+# exit

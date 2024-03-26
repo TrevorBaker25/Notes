@@ -1,0 +1,178 @@
+Restart Docker container (Nagios Core):
+
+$ docker start nagios
+
+$ docker ps
+
+
+
+Browse: localhost:8081
+
+nagiosadmin/nagios
+
+
+
+$ docker exec -ti nagios /bin/bash
+
+# cd /opt/nagios/etc/
+
+# ls
+
+# ls objects/
+
+
+
+Go to Nagios Dashboard > System > Configuration - contacts object
+
+
+
+# nano objects/contacts.cfg
+
+
+
+Restart the nagios server - for configuration changes to be applied
+
+> System > Process Info > Restart the nagios process > Commit
+
+
+
+Plugin location:
+
+# ls /opt/nagios/libexec/
+
+
+
+dataloss
+
+- warning - 20%
+
+- critical - 50%
+
+
+
+# exit
+
+
+
+
+
+ELK Stack:
+
+
+
+ElasticSearch -> data storage & processing tool
+
+Logstash -> data pipeline
+
+Kibana -> visualizer
+
+Beats -> data collector
+
+
+
+
+
+ELK stack - using Docker containers:
+
+
+
+$ sudo sysctl -w vm.max_map_count=262144
+
+
+
+$ docker-compose version
+
+$ docker version
+
+
+
+Install Docker Compose:
+
+$ sudo curl -SL https://github.com/docker/compose/releases/download/v2.24.6/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+
+$ sudo chmod +x /usr/local/bin/docker-compose
+
+
+
+
+
+$ git clone https://github.com/abhijithvg/ELKExample.git
+
+$ cd ELKExample
+
+
+
+$ docker-compose up -d
+
+$ docker ps
+
+
+
+Access Kibana: 
+
+Browse: http://localhost:5601
+
+
+
+Access Jenkins:
+
+Browse: http://localhost:8080
+
+
+
+Install plugin:  Docker Pipeline
+
+
+
+Create Jenkins Job:
+
+Template: Pipeline
+
+
+
+Pipeline Script from SCM: Git > https://github.com/abhijithvg/ELKExample.git
+
+
+
+$ sudo chmod 777 /var/run/docker.sock
+
+
+
+Browse: http://localhost:81
+
+
+
+
+
+Kibana > Explore on my own
+
+
+
+TO create an index pattern:
+
+
+
+Go to Kibana > Dashboard > kibana > Index Patterns
+
+  > define index pattern as logstash* > Next Step
+
+  > under time filer field name select @timestamp
+
+  > Click create index pattern
+
+
+
+Now click on discover to see the log in kibana
+
+
+
+
+
+$ docker-compose down
+
+$ docker rm -f XXXX
+
+
+
+
+
